@@ -1,61 +1,45 @@
-﻿@model IEnumerable<ExamenAWSMiguelRicoç.Models.Equipo>
+﻿@model IEnumerable<ExamenAWSMiguelRicoç.Models.Apuesta>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Apuestas</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Crear nueva apuesta</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.IdEquipo)
+                ID
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Nombre)
+                @Html.DisplayNameFor(model => model.Usuario)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Imagen)
+                Goles Real Madrid
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Champions)
+                Goles Manchester City
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Web)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Descripcion)
-            </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.IdEquipo)
+                @Html.DisplayFor(modelItem => item.IdApuesta)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
+                @Html.DisplayFor(modelItem => item.Usuario)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Imagen)
+                @Html.DisplayFor(modelItem => item.GolesEquipoLocal)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Champions)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Web)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Descripcion)
-            </td>
-            <td>
-                <a class="nav-link text-dark" asp-area="" asp-controller="Apuestas" asp-action="GetJugadores" asp-route-idequipo="@item.IdEquipo">Jugadores</a>
+                @Html.DisplayFor(modelItem => item.GolesEquipoVisitante)
             </td>
         </tr>
 }

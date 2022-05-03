@@ -1,23 +1,18 @@
 ﻿@model ExamenAWSMiguelRicoç.Models.Jugador
 
 @{
-    ViewData["Title"] = "NuevoJugador";
-
+    ViewData["Title"] = "Create";
+    Equipo equipo = (Equipo) ViewData["EQUIPO"];
 }
 
-<h1>NuevoJugador</h1>
+<h1>Crear jugador</h1>
 
 <h4>Jugador</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="NuevoJugador" enctype="multipart/form-data">
+        <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="IdJugador" class="control-label"></label>
-                <input asp-for="IdJugador" class="form-control" />
-                <span asp-validation-for="IdJugador" class="text-danger"></span>
-            </div>
             <div class="form-group">
                 <label asp-for="Nombre" class="control-label"></label>
                 <input asp-for="Nombre" class="form-control" />
@@ -30,25 +25,22 @@
             </div>
             <div class="form-group">
                 <label asp-for="Imagen" class="control-label"></label>
-                <input type="file" asp-for="Imagen" name="file" class="form-control" />
+                <input type="file" name="imagen" class="form-control" />
                 <span asp-validation-for="Imagen" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="IdEquipo" class="control-label"></label>
-                <input asp-for="IdEquipo" class="form-control"  value="@ViewData["IDEQUIPO"]"/>
+                <label class="control-label">Equipo</label>
+                <input asp-for="IdEquipo" value="@equipo.IdEquipo" class="form-control" type="hidden"/>
+                <input type="text" value="@equipo.Nombre" disabled class="form-control"/>
                 <span asp-validation-for="IdEquipo" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Crear jugador" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="VerJugadoresByEquipo" asp-route-idequipo="@equipo.IdEquipo">Volver al listado</a>
 </div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

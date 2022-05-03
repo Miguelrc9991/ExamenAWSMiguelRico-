@@ -1,14 +1,15 @@
 ﻿@model IEnumerable<ExamenAWSMiguelRicoç.Models.Jugador>
 
 @{
-    ViewData["Title"] = "GetJugadores";
+    ViewData["Title"] = "VerJugadoresByEquipo";
+    Equipo equipo = (Equipo)ViewData["EQUIPO"];
 }
 
-<h1>GetJugadores</h1>
+<h1>Jugadores del @equipo.Nombre <img src="@equipo.Imagen" height="200"/></h1>
 
 <p>
-    <a class="nav-link text-dark" asp-area="" asp-controller="Apuestas" asp-action="NuevoJugador" asp-route-idequipo="@ViewData["IDEQUIPO"]">Nuevo Jugador</a></p>
-
+    <a asp-action="Create" asp-route-idequipo="@equipo.IdEquipo">Crear jugador</a>
+</p>
 <table class="table">
     <thead>
         <tr>
@@ -23,9 +24,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Imagen)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdEquipo)
             </th>
             <th></th>
         </tr>
@@ -43,13 +41,10 @@
                 @Html.DisplayFor(modelItem => item.Posicion)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Imagen)
+                <img src="https://s3-examen.s3.amazonaws.com/@item.Imagen" height="200"/>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdEquipo)
-            </td>
-            <td>
-                
+                <a asp-controller="Jugadores" asp-action="Details" asp-route-id="@item.IdJugador">Detalles</a>
             </td>
         </tr>
 }
