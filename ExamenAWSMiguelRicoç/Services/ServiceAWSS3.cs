@@ -13,15 +13,14 @@ namespace ExamenAWSMiguelRicoç.Services
     {
         private string bucketName;
         private IAmazonS3 awsClient;
-        public ServiceAWSS3(IAmazonS3 client,
-            IConfiguration configuration)
+
+        public ServiceAWSS3(IAmazonS3 client, IConfiguration configuration)
         {
             this.awsClient = client;
             this.bucketName = configuration.GetValue<string>("AWS:BucketName");
         }
 
-        public async Task<bool> UploadFileAsync
-            (Stream stream, string fileName)
+        public async Task<bool> UploadFileAsync(Stream stream, string fileName)
         {
             PutObjectRequest request = new PutObjectRequest
             {
@@ -29,6 +28,8 @@ namespace ExamenAWSMiguelRicoç.Services
                 Key = fileName,
                 BucketName = this.bucketName
             };
+            //DEBEMOS CAPTURAR UNA RESPUESTA MEDIANTE EL CLIENTE AWS
+            //ENVIANDO EL REQUEST
             PutObjectResponse response =
                 await this.awsClient.PutObjectAsync(request);
             if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
@@ -39,12 +40,6 @@ namespace ExamenAWSMiguelRicoç.Services
             {
                 return false;
             }
-        }
-        public async Task<List<string>> GetFilesAsync()
-        {
-            ListVersionsResponse response =
-                await this.awsClient.ListVersionsAsync(this.bucketName);
-            return response.Versions.Select(x => x.Key).ToList();
         }
 
         public async Task<bool> DeleteFileAsync(string fileName)
@@ -59,20 +54,6 @@ namespace ExamenAWSMiguelRicoç.Services
             else
             {
                 return false;
-            }
-        }
-
-        public async Task<Stream> GetFileAsync(string fileName)
-        {
-            GetObjectResponse response =
-                await this.awsClient.GetObjectAsync(this.bucketName, fileName);
-            if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
-            {
-                return response.ResponseStream;
-            }
-            else
-            {
-                return null;
             }
         }
     }

@@ -8,7 +8,7 @@
 <h1>Jugadores  @equipo.Nombre</h1>
 
 <p>
-    <a asp-action="Create" asp-route-idequipo="@equipo.IdEquipo">Crear jugador</a>
+    <a asp-action="Create" asp-route-idequipo="@equipo.IdEquipo"> jugador</a>
 </p>
 <table class="table">
     <thead>
@@ -41,7 +41,7 @@
                 @Html.DisplayFor(modelItem => item.Posicion)
             </td>
             <td>
-                <img src="https://s3-imagenes-doctores-mrc.s3.amazonaws.com/@item.Imagen" height="200"/>
+                <img src="https://s3-imagenes-examen-mrc.s3.amazonaws.com/@item.Imagen" height="200"/>
             </td>
             <td>
                 <a asp-controller="Jugadores" asp-action="Details" asp-route-id="@item.IdJugador">Detalles</a>

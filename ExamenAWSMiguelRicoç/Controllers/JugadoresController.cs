@@ -40,7 +40,7 @@ namespace ExamenAWSMiguelRicoç.Controllers
             //}
             jugador.Imagen = nombreFichero;
             this.repo.CreateJugador(jugador);
-            return RedirectToAction("VerJugadoresByEquipo", new { idequipo = jugador.IdEquipo});
+            return RedirectToAction("Jugadores", new { idequipo = jugador.IdEquipo});
         }
     }
 }
