@@ -5,7 +5,7 @@
     Equipo equipo = (Equipo)ViewData["EQUIPO"];
 }
 
-<h1>Jugadores del @equipo.Nombre <img src="@equipo.Imagen" height="200"/></h1>
+<h1>Jugadores  @equipo.Nombre</h1>
 
 <p>
     <a asp-action="Create" asp-route-idequipo="@equipo.IdEquipo">Crear jugador</a>

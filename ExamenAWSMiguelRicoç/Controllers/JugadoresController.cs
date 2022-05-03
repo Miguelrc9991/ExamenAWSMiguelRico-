@@ -18,7 +18,7 @@ namespace ExamenAWSMiguelRicoç.Controllers
             this.repo = repo;
             this.service = service;
         }
-        public IActionResult VerJugadoresByEquipo(int idequipo) {
+        public IActionResult Jugadores(int idequipo) {
             Equipo equipo = this.repo.FindEquipo(idequipo);
             ViewData["EQUIPO"] = equipo;
             return View(this.repo.GetJugadoresByEquipo(idequipo));
@@ -35,9 +35,9 @@ namespace ExamenAWSMiguelRicoç.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Jugador jugador, IFormFile imagen) {
             string nombreFichero = jugador.Nombre + "." + imagen.FileName.Split(".")[1];
-            using (Stream stream = imagen.OpenReadStream()) {
-                await this.service.UploadFileAsync(stream, nombreFichero);
-            }
+            //using (Stream stream = imagen.OpenReadStream()) {
+            //    await this.service.UploadFileAsync(stream, nombreFichero);
+            //}
             jugador.Imagen = nombreFichero;
             this.repo.CreateJugador(jugador);
             return RedirectToAction("VerJugadoresByEquipo", new { idequipo = jugador.IdEquipo});
