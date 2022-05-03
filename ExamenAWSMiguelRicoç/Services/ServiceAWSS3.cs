@@ -7,18 +7,21 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ExamenAWSMiguelRicoç.Repositories
+namespace ExamenAWSMiguelRicoç.Services
 {
-    public class RepositoryS3
+    public class ServiceAWSS3
     {
         private string bucketName;
         private IAmazonS3 awsClient;
-        public RepositoryS3(IAmazonS3 client, IConfiguration configuration)
+        public ServiceAWSS3(IAmazonS3 client,
+            IConfiguration configuration)
         {
             this.awsClient = client;
             this.bucketName = configuration.GetValue<string>("AWS:BucketName");
         }
-        public async Task<bool> UploadFileAsync(Stream stream, string fileName)
+
+        public async Task<bool> UploadFileAsync
+            (Stream stream, string fileName)
         {
             PutObjectRequest request = new PutObjectRequest
             {
@@ -26,8 +29,6 @@ namespace ExamenAWSMiguelRicoç.Repositories
                 Key = fileName,
                 BucketName = this.bucketName
             };
-           
-
             PutObjectResponse response =
                 await this.awsClient.PutObjectAsync(request);
             if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
@@ -39,6 +40,13 @@ namespace ExamenAWSMiguelRicoç.Repositories
                 return false;
             }
         }
+        public async Task<List<string>> GetFilesAsync()
+        {
+            ListVersionsResponse response =
+                await this.awsClient.ListVersionsAsync(this.bucketName);
+            return response.Versions.Select(x => x.Key).ToList();
+        }
+
         public async Task<bool> DeleteFileAsync(string fileName)
         {
             DeleteObjectResponse response =
@@ -51,6 +59,20 @@ namespace ExamenAWSMiguelRicoç.Repositories
             else
             {
                 return false;
+            }
+        }
+
+        public async Task<Stream> GetFileAsync(string fileName)
+        {
+            GetObjectResponse response =
+                await this.awsClient.GetObjectAsync(this.bucketName, fileName);
+            if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
+            {
+                return response.ResponseStream;
+            }
+            else
+            {
+                return null;
             }
         }
     }

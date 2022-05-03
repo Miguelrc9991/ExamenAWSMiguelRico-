@@ -1,6 +1,7 @@
 using Amazon.S3;
 using ExamenAWSMiguelRicoç.Data;
 using ExamenAWSMiguelRicoç.Repositories;
+using ExamenAWSMiguelRicoç.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -27,13 +28,12 @@ namespace ExamenAWSMiguelRicoç
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            string cadena = this.Configuration.GetConnectionString("CadenaAWS");
-
+            string cadena = this.Configuration.GetConnectionString("AWS");
             services.AddTransient<RepositoryApuestas>();
             services.AddDbContext<ApuestasContext>(options => options.UseMySql(cadena, ServerVersion.AutoDetect(cadena)));
 
             services.AddAWSService<IAmazonS3>();
-            services.AddTransient<RepositoryS3>();
+            services.AddTransient<ServiceAWSS3>();
             services.AddCors(options => options.AddPolicy("AllowOrigin", x => x.AllowAnyOrigin()));
 
             services.AddControllersWithViews();

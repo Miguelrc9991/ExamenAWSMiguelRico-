@@ -19,77 +19,55 @@ namespace ExamenAWSMiguelRicoç.Repositories
         {
             return this.context.Equipos.ToList();
         }
+        public Equipo FindEquipo(int id)
+        {
+            return this.context.Equipos.SingleOrDefault(x => x.IdEquipo == id);
+        }
+        public List<Jugador> GetJugadoresByEquipo(int idequipo)
+        {
+            return this.context.Jugadores.Where(x => x.IdEquipo == idequipo).ToList();
+        }
+        public Jugador FindJugador(int id)
+        {
+            return this.context.Jugadores.SingleOrDefault(x => x.IdJugador == id);
+        }
         public List<Apuesta> GetApuestas()
         {
             return this.context.Apuestas.ToList();
         }
-        public List<Jugador> GetJugadores(int idequipo)
+        public void CreateJugador(Jugador jugador)
         {
-            var consulta = from datos in this.context.Jugadores
-                           where datos.IdEquipo == idequipo
-                           select datos;
-            return consulta.ToList();
+            jugador.IdJugador = this.GetMaxIdJugador() + 1;
+            this.context.Jugadores.Add(jugador);
+            this.context.SaveChanges();
         }
-        public int GetLastId()
+        public void CreateApuesta(Apuesta apuesta)
         {
-            if (this.context.Jugadores.Count() == 0)
-            {
-                return 1;
-            }
-            else{
-                int id =
-           this.context.Jugadores.Max(x => x.IdJugador) + 1;
-                return id;
-            }
-           
+            apuesta.IdApuesta = this.GetMaxIdApuesta() + 1;
+            this.context.Apuestas.Add(apuesta);
+            this.context.SaveChanges();
         }
-        public int GetLastIdApuesta()
+        private int GetMaxIdJugador()
         {
-            if (this.context.Apuestas.Count() == 0)
+            if (this.context.Jugadores.Count() != 0)
             {
-                return 1;
+                return this.context.Jugadores.Max(x => x.IdJugador);
             }
             else
             {
-                int id =
-           this.context.Apuestas.Max(x => x.IdApuesta) + 1;
-                return id;
+                return 0;
             }
-
         }
-        public void InsertJugador(int idjugador,string nombre,string posicion,string imagen,int idequipo)
+        private int GetMaxIdApuesta()
         {
-            int idjugadorr = this.GetLastId();
-            Jugador j = new Jugador
+            if (this.context.Apuestas.Count() != 0)
             {
-                IdJugador = idjugadorr,
-                Nombre = nombre,
-                Posicion=posicion,
-                Imagen=imagen,
-                IdEquipo=idequipo
-                
-            };
-            this.context.Jugadores.Add(j);
-            this.context.SaveChanges();
-        }
-
-        public void nuevaapuesta(int idapuesta, string usuario,  int idequipolocal, int idequipovisitante, int golesequipolocal,int golesequipovisitante)
-        {
-            int idapuestaf = this.GetLastIdApuesta();
-            Apuesta a = new Apuesta
+                return this.context.Apuestas.Max(x => x.IdApuesta);
+            }
+            else
             {
-               IdApuesta=idapuesta,
-               Usuario = usuario,
-               IdEquipoLocal=idequipolocal,
-               IdEquipoVisitante=idequipovisitante,
-               GolesEquipoLocal=golesequipolocal,
-               GolesEquipoVisitante=golesequipovisitante
-
-            };
-            this.context.Apuestas.Add(a);
-            this.context.SaveChanges();
+                return 0;
+            }
         }
-
-
     }
 }
